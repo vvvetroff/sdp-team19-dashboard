@@ -6,7 +6,35 @@ Hello, my name is Vlad Vetroff! Please to meet you, here in this markdown docume
 
 This is the complete repo for our (Esha and I) side of the Turbo Ducks project, where we get the data from the DMS (or otherwise), parse it and display it on a dashboard.
 
-I am sure you have some questions regarding this project, as you and your team are continuing it. I figured I could answer some questions that you MIGHT have:
+I am sure you have some questions regarding this project, as you and your team are continuing it. I figured I could answer some questions that you MIGHT have. Will you read it? Beats me.
+
+> How do I start this app up?
+
+- `docker compose up -d` at the root of the repo. I do not have the `.env` variables anymore, but thankfully they are fake.
+  - `OWL_API_KEY` is just some random string used within `backend/mock/mock_dms.py` and has no real bearing within the project as a whole.
+  - `OWL_INSTANCE` is just the url the `mock_dms.py` runs on.
+  - `REDIS_HOST` and `REDIS_PORT` are the default host and port of a Redis container. Check the Redis documentation for that.
+  - You WILL need to populate these if you want the app to run!
+- If you want to run the servers separately (would not recommend).
+  - Backend:
+
+    ```sh
+    cd backend/
+    python3 -m venv .venv
+    source .venv/bin/activate # For macs
+    source venv/Scripts/activate # For windows (ew)
+    pip install --upgrade pip && pip install -r requirements.txt
+    ```
+
+  - Frontend:
+
+    ```
+    cd frontend/
+    npm install
+    npm run dev
+    ```
+
+    - update packages as needed
 
 > Do you have documentation?
 
@@ -39,13 +67,6 @@ I am sure you have some questions regarding this project, as you and your team a
   - `requests/`: these are Bruno requests, meant to test out the backend/redis functionality
   - The entrypoint for the backend server is `app.py`. Bulk of the logic lives in `background_tasks.py` and `endpoints.py`
 - `frontend/`: all the frontend-related logic lives here
-
-> How do I start this app up?
-
-- `docker compose up -d` at the root of the repo. Unfortunally, I do not have the `.env` file anymore. Thankfully, the environment variables that this app does require are fake.
-  - `OWL_API_KEY` is just some random string used within `backend/mock/mock_dms.py` and has no real bearing within the project as a whole.
-  - `OWL_INSTANCE` is just the url the `mock_dms.py` runs on.
-  - `REDIS_HOST` and `REDIS_PORT` are the default host and port of a Redis container. Check the Redis documentation for that.
 
 > Why is there commented-out code about some 'serial' business and 'uncomment this for demo day'?
 
