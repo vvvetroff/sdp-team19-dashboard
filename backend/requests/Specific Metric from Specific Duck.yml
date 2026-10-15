@@ -1,0 +1,22 @@
+info:
+  name: Specific Metric from Specific Duck
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: http://localhost:8000/api/:device_id/metrics/:metric
+  params:
+    - name: metric
+      value: voltage
+      type: path
+    - name: device_id
+      value: DUCK0001
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

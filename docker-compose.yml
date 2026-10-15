@@ -1,0 +1,86 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: sdp19-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  mock-dms:
+    build:
+      context: ./backend
+      dockerfile: mock/Dockerfile
+    container_name: sdp19-mock-dms
+    environment:
+      - OWL_API_KEY=${OWL_API_KEY}
+    ports:
+      - "5000:5000"
+    command:
+      [
+        "uvicorn",
+        "mock_dms:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "5000",
+        "--reload",
+      ]
+    volumes:
+      - ./backend/mock:/app
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sdp19-backend
+    ports:
+      - "8000:8000"
+    # NOTE :
+    # devices:
+    #   - "/dev/tty.usbserial-576D0235311:/dev/ttyUSB0"
+    environment:
+      - OWL_API_KEY=${OWL_API_KEY}
+      - OWL_INSTANCE=${OWL_INSTANCE}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      redis:
+        condition: "service_healthy"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request,sys; urllib.request.urlopen('http://localhost:8000/api/health').read(); sys.exit(0)",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sdp19-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: "service_healthy"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  redis-data:
