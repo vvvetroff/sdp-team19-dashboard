@@ -70,7 +70,7 @@ I am sure you have some questions regarding this project, as you and your team a
 
 > Why is there commented-out code about some 'serial' business and 'uncomment this for demo day'?
 
-- This project is a part of a joint team effort between the CSE and ECE departments. The CSE department developed the ML model and the dashboard, while the ECE department developed whatever the hell they developed. Although both departments appeared in our weekly meetings with OWL, hardly did we talk to the ECE department (they won podium!). When it came time to showcase our project for demo day, the ECE department created a 'mock CAN bus' which generated fake data as if it came from the Formula SAE electric vehicle. This fake data would get funneled into and read from a USB-C serial bus. This required seperate code to be developed so that the app could read and parse incoming data from the serial port. This project was intended to perform API calls to an actual DMS to get the data, and thus the commented out code has no real bearing on the project as a whole.
+- This project is a part of a joint team effort between the CSE and ECE departments. When it came time to showcase our project for demo day, the ECE department created a 'mock CAN bus' which generated fake data as if it came from the Formula SAE electric vehicle. This fake data would get funneled into and read from a USB-C serial bus. This required seperate code to be developed so that the app could read and parse incoming data from the serial port. This project was intended to perform API calls to an actual DMS to get the data, and thus the commented out code has no real bearing on the project as a whole.
 
 > This code looks so good! I love it! Who developed it?
 
